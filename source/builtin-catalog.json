@@ -1,0 +1,221 @@
+{
+  "descriptions": {
+    "assign": "Sets local variable values for child statements.",
+    "assert": "Stops evaluation with an error if the condition is false.",
+    "children": "Evaluates all child statements or the children selected by index.",
+    "circle": "Creates a 2D circle from a radius or diameter.",
+    "color": "Sets the preview color and opacity of child geometry.",
+    "cube": "Creates a cube or rectangular solid, optionally centered at the origin.",
+    "cylinder": "Creates a cylinder, cone, or truncated cone along the Z axis.",
+    "difference": "Subtracts the other children from the first child.",
+    "echo": "Writes the supplied values to the OpenSCAD console. Use it to inspect values while debugging a model or expression.",
+    "hull": "Creates the convex hull of the child geometry.",
+    "import": "Loads data from an external file.",
+    "intersection": "Keeps the geometry shared by all children.",
+    "linear_extrude": "Extrudes a 2D shape into a solid, with optional twist and scaling.",
+    "minkowski": "Computes the Minkowski sum of the children.",
+    "mirror": "Reflects the children across the plane perpendicular to the given vector.",
+    "multmatrix": "Applies a transformation matrix to the children.",
+    "offset": "Expands or contracts the outline of a 2D shape.",
+    "polygon": "Creates a 2D polygon from points and optional paths.",
+    "polyhedron": "Creates a 3D solid from vertices and faces.",
+    "projection": "Projects 3D geometry onto the XY plane or takes a cross-section at Z = 0.",
+    "render": "Evaluates child geometry fully, including during preview.",
+    "resize": "Scales the children to the requested dimensions.",
+    "rotate": "Rotates child geometry by angles in degrees.",
+    "rotate_extrude": "Sweeps a 2D profile around the Z axis to create a solid.",
+    "scale": "Scales child geometry along one or more axes.",
+    "sphere": "Creates a sphere from a radius or diameter.",
+    "square": "Creates a 2D square or rectangle.",
+    "surface": "Creates a height field from a data file or image.",
+    "text": "Creates 2D geometry from text in the selected font.",
+    "translate": "Moves child geometry by the given vector.",
+    "union": "Combines the children into one geometry.",
+    "abs": "Returns the absolute value of a number.",
+    "acos": "Returns the inverse cosine in degrees.",
+    "asin": "Returns the inverse sine in degrees.",
+    "atan": "Returns the inverse tangent in degrees.",
+    "atan2": "Returns the angle in degrees from the positive X axis to the point (x, y).",
+    "ceil": "Rounds up to the nearest integer.",
+    "chr": "Converts Unicode code points to a string.",
+    "concat": "Concatenates values and lists into a single list.",
+    "cos": "Returns the cosine of an angle in degrees.",
+    "cross": "Computes the cross product of two vectors.",
+    "dxf_cross": "Reads two intersecting lines from a DXF file and returns their intersection.",
+    "dxf_dim": "Reads a named dimension from a DXF file.",
+    "exp": "Returns e raised to the given power.",
+    "floor": "Rounds down to the nearest integer.",
+    "is_bool": "Tests whether the value is a Boolean.",
+    "is_function": "Tests whether the value is a function.",
+    "is_list": "Tests whether the value is a list.",
+    "is_num": "Tests whether the value is a number.",
+    "is_string": "Tests whether the value is a string.",
+    "is_undef": "Tests whether the value is undefined.",
+    "len": "Returns the length of a string or list.",
+    "ln": "Returns the natural logarithm.",
+    "log": "Returns the base-10 logarithm.",
+    "lookup": "Looks up a value in a table, interpolating between neighboring entries.",
+    "max": "Returns the largest supplied value.",
+    "min": "Returns the smallest supplied value.",
+    "norm": "Returns the Euclidean length of a vector.",
+    "ord": "Returns the Unicode code point of the first character.",
+    "parent_module": "Returns the name of a module in the current call stack.",
+    "pow": "Raises the base to the given exponent.",
+    "rands": "Returns a list of random numbers within the specified bounds, with an optional seed.",
+    "round": "Rounds to the nearest integer.",
+    "search": "Finds the indices of matching entries in a string or list.",
+    "sign": "Returns -1, 0, or 1 according to the sign of the number.",
+    "sin": "Returns the sine of an angle in degrees.",
+    "sqrt": "Returns the square root.",
+    "str": "Converts the supplied values to strings and concatenates them.",
+    "tan": "Returns the tangent of an angle in degrees.",
+    "version": "Returns the OpenSCAD version as a list.",
+    "version_num": "Returns the OpenSCAD version as a number.",
+    "fill": "Fills enclosed holes in child geometry.",
+    "textmetrics": "Returns size and positioning metrics for a string of text.",
+    "fontmetrics": "Returns metrics for the selected font.",
+    "fragments": "Returns the number of segments used to approximate a circle.",
+    "object": "Creates an object from named values.",
+    "roof": "Creates a roof over a 2D footprint."
+  },
+  "base": {
+    "modules": {
+      "assign": ["..."],
+      "assert": ["condition", "message"],
+      "children": ["index"],
+      "circle": {
+        "positional": ["r=1"],
+        "named": ["d"]
+      },
+      "color": ["c", "alpha"],
+      "cube": ["size=1", "center=false"],
+      "cylinder": {
+        "positional": ["h=1", "r1=1", "r2=1", "center=false"],
+        "named": ["r", "d", "d1", "d2"]
+      },
+      "difference": [],
+      "echo": ["..."],
+      "hull": [],
+      "import": ["file", "convexity", "layer"],
+      "intersection": [],
+      "linear_extrude": ["height", "center", "convexity", "twist", "slices", "scale"],
+      "minkowski": [],
+      "mirror": ["v"],
+      "multmatrix": ["m"],
+      "offset": {
+        "positional": ["r"],
+        "named": ["delta", "chamfer"]
+      },
+      "polygon": ["points", "paths=undef", "convexity=1"],
+      "polyhedron": ["points", "faces", "convexity=1"],
+      "projection": ["cut=false"],
+      "render": ["convexity=2"],
+      "resize": ["newsize", "auto"],
+      "rotate": ["a", "v"],
+      "rotate_extrude": ["angle=360", "convexity=2"],
+      "scale": ["v"],
+      "sphere": {
+        "positional": ["r=1"],
+        "named": ["d"]
+      },
+      "square": ["size=1", "center=false"],
+      "surface": ["file", "center", "invert", "convexity"],
+      "text": ["text", "size", "font", "halign", "valign", "spacing", "direction", "language", "script"],
+      "translate": ["v"],
+      "union": []
+    },
+    "functions": {
+      "abs": ["x"],
+      "acos": ["x"],
+      "asin": ["x"],
+      "assert": ["condition", "message"],
+      "atan": ["x"],
+      "atan2": ["y", "x"],
+      "ceil": ["x"],
+      "chr": ["value"],
+      "concat": ["..."],
+      "cos": ["x"],
+      "cross": ["a", "b"],
+      "dxf_cross": ["file", "layer", "origin", "scale"],
+      "dxf_dim": ["file", "layer", "name", "origin", "scale"],
+      "echo": ["..."],
+      "exp": ["x"],
+      "floor": ["x"],
+      "is_bool": ["value"],
+      "is_function": ["value"],
+      "is_list": ["value"],
+      "is_num": ["value"],
+      "is_string": ["value"],
+      "is_undef": ["value"],
+      "len": ["value"],
+      "ln": ["x"],
+      "log": ["x"],
+      "lookup": ["key", "table"],
+      "max": ["..."],
+      "min": ["..."],
+      "norm": ["v"],
+      "ord": ["character"],
+      "parent_module": ["index"],
+      "pow": ["base", "exponent"],
+      "rands": ["min_value", "max_value", "value_count", "seed_value"],
+      "round": ["x"],
+      "search": ["match", "table", "num_returns_per_match", "index_col_num"],
+      "sign": ["x"],
+      "sin": ["x"],
+      "sqrt": ["x"],
+      "str": ["..."],
+      "tan": ["x"],
+      "version": [],
+      "version_num": []
+    },
+    "variables": ["$fa", "$fs", "$fn", "$t", "$vpr", "$vpt", "$vpd", "$vpf", "$children", "$preview", "$parent_modules"]
+  },
+  "nightly": {
+    "modules": {
+      "fill": [],
+      "import": {
+        "positional": ["file", "convexity", "layer"],
+        "named": ["center", "id"]
+      },
+      "linear_extrude": {
+        "positional": ["height", "center", "convexity", "twist", "slices", "scale"],
+        "named": ["v", "segments", "h"]
+      },
+      "rotate_extrude": {
+        "positional": ["angle=360", "convexity=2"],
+        "named": ["start", "a"]
+      },
+      "text": {
+        "positional": ["text", "size", "font", "halign", "valign", "spacing", "direction", "language", "script"],
+        "named": ["em"]
+      },
+      "assign": null
+    },
+    "functions": {
+      "textmetrics": {
+        "positional": ["text", "size", "font"],
+        "named": ["direction", "language", "script", "halign", "valign", "spacing", "em"]
+      },
+      "fontmetrics": ["size", "font", "em"],
+      "fragments": {
+        "positional": ["r=1"],
+        "named": ["d"]
+      },
+      "object": ["..."],
+      "import": {
+        "positional": ["file"],
+        "named": ["type"]
+      }
+    }
+  },
+  "experimental": {
+    "roof": {
+      "modules": {
+        "roof": {
+          "positional": ["method=\"voronoi\""],
+          "named": ["convexity=1"]
+        }
+      }
+    }
+  }
+}

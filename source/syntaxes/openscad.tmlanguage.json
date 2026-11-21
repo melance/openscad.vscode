@@ -1,0 +1,179 @@
+{
+  "name": "OpenSCAD",
+  "scopeName": "source.openscad",
+  "injections": {
+    "L:source.openscad - meta.expression.openscad - comment - string": {
+      "patterns": [
+        {
+          "name": "keyword.operator.modifier.disable.openscad",
+          "match": "\\*"
+        },
+        {
+          "name": "keyword.operator.modifier.root.openscad",
+          "match": "!(?!=)"
+        },
+        {
+          "name": "keyword.operator.modifier.background.openscad",
+          "match": "%"
+        }
+      ]
+    }
+  },
+  "patterns": [
+    {
+      "comment": "Single line comments",
+      "name": "comment.line.double-slash.openscad",
+      "match": "//.*$"
+    },
+    {
+      "comment": "Multiline comments",
+      "name": "comment.block.openscad",
+      "begin": "/\\*",
+      "end": "\\*/"
+    },
+    {
+      "comment": "Quoted strings",
+      "name": "string.quoted.double.openscad",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.openscad",
+          "match": "\\\\."
+        }
+      ]
+    },
+    {
+      "comment": "Module and function definitions",
+      "match": "\\b(module|function)\\b\\s+([A-Za-z_][A-Za-z0-9_]*)",
+      "captures": {
+        "1": { "name": "storage.type.openscad" },
+        "2": { "name": "entity.name.function.openscad" }
+      }
+    },
+    {
+      "comment": "Anonymous functions",
+      "name": "storage.type.openscad",
+      "match": "\\bfunction\\b(?=\\s*\\()"
+    },
+    {
+      "comment": "Includes and uses",
+      "match": "\\b(include|use)\\b[ \\t]*(<[^>\\r\\n]+>)",
+      "captures": {
+        "1": { "name": "keyword.control.openscad" },
+        "2": { "name": "string.unquoted.path.openscad" }
+      }
+    },
+    {
+      "comment": "Debug modifier",
+      "name": "keyword.operator.modifier.debug.openscad",
+      "match": "#"
+    },
+    {
+      "comment": "Comparison operators",
+      "name": "keyword.operator.comparison.openscad",
+      "match": "==|!=|<=|>=|<|>"
+    },
+    {
+      "comment": "Assignment and function body expressions",
+      "name": "meta.expression.openscad",
+      "begin": "=",
+      "beginCaptures": {
+        "0": { "name": "keyword.operator.assignment.openscad" }
+      },
+      "end": "(?=[;,)}\\]])",
+      "patterns": [{ "include": "$self" }]
+    },
+    {
+      "comment": "Boolean operators",
+      "name": "keyword.operator.logical.openscad",
+      "match": "&&|\\|\\||!"
+    },
+    {
+      "comment": "Conditional operator",
+      "name": "keyword.operator.conditional.openscad",
+      "match": "\\?"
+    },
+    {
+      "comment": "Arithmetic operators",
+      "name": "keyword.operator.arithmetic.openscad",
+      "match": "[-+*/%^]"
+    },
+    {
+      "comment": "Comma seperators",
+      "name": "punctuation.separator.comma.openscad",
+      "match": ","
+    },
+    {
+      "comment": "Statement terminator",
+      "name": "punctuation.terminator.statement.openscad",
+      "match": ";"
+    },
+    {
+      "comment": "Parameters, arguments, and grouped expressions",
+      "name": "meta.expression.openscad",
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.parens.begin.openscad" }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.parens.end.openscad" }
+      },
+      "patterns": [{ "include": "$self" }]
+    },
+    {
+      "comment": "Vector, range, and index expressions",
+      "name": "meta.expression.openscad",
+      "begin": "\\[",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.brackets.begin.openscad" }
+      },
+      "end": "\\]",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.brackets.end.openscad" }
+      },
+      "patterns": [{ "include": "$self" }]
+    },
+    {
+      "comment": "Opening braces",
+      "name": "punctuation.section.block.begin.openscad",
+      "match": "\\{"
+    },
+    {
+      "comment": "Closing braces",
+      "name": "punctuation.section.block.end.openscad",
+      "match": "\\}"
+    },
+    {
+      "comment": "Control keywords",
+      "name": "keyword.control.openscad",
+      "match": "\\b(if|else|for|intersection_for|let|each)\\b"
+    },
+    {
+      "comment": "Constants",
+      "name": "constant.language.openscad",
+      "match": "\\b(true|false|undef|PI)\\b"
+    },
+    {
+      "comment": "User defined special variables",
+      "name": "variable.language.special.openscad",
+      "match": "\\$[A-Za-z_][A-Za-z0-9_]*\\b"
+    },
+    {
+      "comment": "Numbers",
+      "name": "constant.numeric.openscad",
+      "match": "(?<![\\w.])(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?(?!\\w)"
+    },
+    {
+      "comment": "Function and module calls",
+      "name": "entity.name.function.call.openscad",
+      "match": "\\b[A-Za-z_][A-Za-z0-9_]*(?=\\s*\\()"
+    },
+    {
+      "comment": "Variables",
+      "name": "variable.language.openscad",
+      "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+    }
+  ]
+}

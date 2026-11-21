@@ -1,0 +1,142 @@
+{
+  "name": "openscad-language",
+  "publisher": "local-openscad",
+  "displayName": "OpenSCAD Language",
+  "icon": "icon.png",
+  "description": "OpenSCAD language support for Visual Studio Code.",
+  "author": {
+    "name": "Lance Boudreaux"
+  },
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Programming Languages"],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onLanguage:openscad"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "openscad.generateDocumentation",
+        "title": "Generate BOSL2 Documentation",
+        "category": "OpenSCAD",
+        "enablement": "editorLangId == openscad"
+      },
+      {
+        "command": "openscad.preview",
+        "title": "Preview",
+        "category": "OpenSCAD",
+        "enablement": "editorLangId == openscad"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "openscad.preview",
+        "key": "f5",
+        "when": "editorTextFocus && editorLangId == openscad && !inDebugMode"
+      }
+    ],
+    "languages": [
+      {
+        "id": "openscad",
+        "aliases": ["OpenSCAD"],
+        "extensions": [".scad"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "openscad",
+        "scopeName": "source.openscad",
+        "path": "./syntaxes/openscad.tmlanguage.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[openscad]": {
+        "editor.semanticHighlighting.enabled": true
+      }
+    },
+    "configuration": {
+        "title": "OpenSCAD",
+        "properties": {
+        "openscad.bosl2.highlighting.enabled": {
+          "type": "boolean",
+          "default": true,
+          "scope": "resource",
+          "description": "Highlight BOSL2 documentation comments. Customizer annotations use the same color and are always highlighted."
+        },
+        "openscad.targetVersion": {
+          "type": "string",
+          "enum": ["2021.01", "nightly"],
+          "enumDescriptions": ["OpenSCAD 2021.01 stable release.", "OpenSCAD development snapshots."],
+          "default": "2021.01",
+          "scope": "resource",
+          "description": "OpenSCAD version used for built-in highlighting, completion, hover, and signature help."
+        },
+        "openscad.experimentalFeatures": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["roof"] },
+          "uniqueItems": true,
+          "default": [],
+          "scope": "resource",
+          "description": "Experimental OpenSCAD features to recognize for the Nightly target. Enable the same features in OpenSCAD to run the code."
+        },
+        "openscad.executablePath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Absolute path to the OpenSCAD executable, such as openscad.exe. Used to locate the installation libraries when no installation library path is set."
+        },
+        "openscad.userLibraryPath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "description": "Absolute path to the OpenSCAD user libraries directory. Leave empty to use the platform default."
+        },
+        "openscad.extraLibraryPaths": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "scope": "resource",
+          "description": "Additional absolute folders for resolving use and include imports in VS Code. Searched in order after OPENSCADPATH and before the user and installation library folders."
+        },
+        "openscad.installationLibraryPath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "description": "Absolute path to the libraries directory for your OpenSCAD installation. Leave empty to search standard installation locations."
+        },
+            "openscad.regions.enabled": {
+                "type": "boolean",
+                "default": true,
+                "scope": "resource",
+                "description": "Enable folding and highlighting for #region and #endregion comments."
+            }
+        }
+    },
+    "colors": [
+        {
+            "id": "openscad.regionForeground",
+            "description": "Text color of OpenSCAD region opening and closing comments.",
+            "defaults": {
+                "dark": "textLink.foreground",
+                "light": "textLink.foreground",
+                "highContrast": "editor.foreground",
+                "highContrastLight": "editor.foreground"
+            }
+        },
+        {
+            "id": "openscad.documentationBodyForeground",
+            "description": "Text color for BOSL2 documentation bodies and OpenSCAD Customizer annotations.",
+            "defaults": {
+              "dark": "#B8C5D0",
+              "light": "#364652",
+              "highContrast": "editor.foreground",
+              "highContrastLight": "editor.foreground"
+            }
+        }
+    ]
+  }
+}
