@@ -6,7 +6,7 @@ const referenceProvider = require("./references");
 const signatureHelpProvider = require("./signature-help");
 const outlineProvider = require("./outline");
 const { registerDiagnostics } = require("./diagnostics");
-const { generateDocumentation } = require("./documentation");
+const { generateDocumentation, registerDocumentationContinuation } = require("./documentation");
 const { registerBuiltinHighlighting } = require("./builtin-highlighting");
 const { previewOpenSCAD } = require("./preview");
 
@@ -71,6 +71,7 @@ function activate(context) {
     context.subscriptions.push(output);
     registerDiagnostics(context, output);
     registerBuiltinHighlighting(context);
+    registerDocumentationContinuation(context);
 
     const documentationBodyStyle = vscode.window.createTextEditorDecorationType({
         color: new vscode.ThemeColor("openscad.documentationBodyForeground")

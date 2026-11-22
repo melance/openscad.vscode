@@ -28,22 +28,45 @@ function readDescription(source, start, name, kind) {
     let matchesDeclaration = false;
     let inDescription = false;
     const description = [];
+    const body = [];
     for (const line of comments.reverse()) {
         const title = /^ *(Function&Module|Function|Module):\s*(\w+)/.exec(line);
         if (title) {
             matchesDeclaration = title[2] === name &&
                 (title[1] === "Function&Module" || title[1].toLowerCase() === kind);
             description.length = 0;
+            body.length = 0;
         }
         const section = /^ ?([\w& ]+):[ \t]*(.*)$/.exec(line);
         if (section) {
             inDescription = section[1].trim() === "Description";
             if (inDescription && section[2]) description.push(section[2]);
-        } else if (inDescription && matchesDeclaration && /^[ \t]{2}/.test(line)) {
-            description.push(line.trim());
+        } else if (inDescription && matchesDeclaration && (/^[ \t]{2}/.test(line) || !line.trim())) {
+            body.push(line);
         }
     }
-    return matchesDeclaration ? description.join("\n") : "";
+    if (!matchesDeclaration) return "";
+
+    const indent = body.reduce((width, line) => line.trim()
+        ? Math.min(width, line.length - line.trimStart().length) : width, Infinity);
+    description.push(...body.map(line => line.trim() ? line.slice(indent) : ""));
+
+    // Markdown collapses ordinary line endings in paragraphs. Keep comment line
+    // breaks visible without adding trailing spaces to fenced code.
+    let fence;
+    return description.map((line, index) => {
+        const marker = /^ {0,3}(`{3,}|~{3,})(.*)$/.exec(line);
+        if (fence) {
+            if (marker && marker[1].startsWith(fence) && !marker[2].trim()) fence = undefined;
+            return line;
+        }
+        if (marker) {
+            fence = marker[1];
+            return line;
+        }
+        if (!line.trim() || !description[index + 1]?.trim() || /(?:\\| {2})$/.test(line)) return line;
+        return line.trimEnd() + "  ";
+    }).join("\n").trimEnd();
 }
 
 async function resolveImportAtPosition(document, position) {
@@ -114,8 +137,9 @@ module.exports = {
             return new vscode.Hover(contents, range);
         }
 
-        const { range, declaration } = call;
+        const { range, declaration, targetDocument } = call;
         const contents = new vscode.MarkdownString();
+        contents.baseUri = targetDocument.uri;
         const signature = declaration.signature.replace(/[ \t]*(?:\r\n?|\n)[ \t]*/g, " ")
             .replace(/\(\s+/, "(")
             .replace(/\s+\)$/, ")");

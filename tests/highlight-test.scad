@@ -41,6 +41,10 @@ function passage_width(tile_width, wall_thickness) =
 //   CaveRockFace(height);
 // Description:
 //   Describe CaveRockFace.
+//   
+//   | a | b |
+//   |---|---|
+//   | 1 | 2 |
 // Arguments:
 //   height = Describe height.
 module CaveRockFace(height = 12.5) {

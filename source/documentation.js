@@ -2,6 +2,59 @@ const vscode = require("vscode");
 const { indexDocument } = require("./symbols");
 const { precedingLineComments } = require("./parameter-docs");
 
+function documentationPrefixes(editor) {
+    if (editor?.document.languageId !== "openscad") return [];
+    const { document, selections } = editor;
+    const prefixes = selections.map(({ start, end }) => {
+        if (start.line !== end.line) return;
+        const line = document.lineAt(start.line);
+        const prefix = /^([ \t]*)\/\/([ \t]*)/.exec(line.text);
+        if (!prefix || start.character < prefix[1].length + 2) return;
+
+        const heading = /^[ \t]*\/\/[ \t]+(?:Function&Module|Function|Module|Description|Arguments|Usage|Example):/;
+        const continuation = /^[ \t]*\/\/(?:[ \t]{2,}|[ \t]*$)/;
+        let first = start.line;
+        while (first > 0 && continuation.test(document.lineAt(first).text) &&
+            !heading.test(document.lineAt(first).text)) first--;
+        if (!heading.test(document.lineAt(first).text)) return;
+
+        const offset = document.offsetAt(line.range.start) + prefix[1].length;
+        const tokens = /"(?:\\[\s\S]|[^"\\])*(?:"|$)|\/\*[\s\S]*?(?:\*\/|$)|\/\/[^\r\n]*/g;
+        for (const token of document.getText().matchAll(tokens)) {
+            if (token.index >= offset) {
+                if (token.index === offset) return prefix[1] + "//" +
+                    (prefix[2].length >= 2 ? prefix[2] : "   ");
+                return;
+            }
+        }
+    });
+    return prefixes.every(Boolean) ? prefixes : [];
+}
+
+function registerDocumentationContinuation(context) {
+    const updateContext = () => vscode.commands.executeCommand("setContext", "openscad.inDocumentationComment",
+        documentationPrefixes(vscode.window.activeTextEditor).length > 0);
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand("openscad.continueDocumentationComment", () => {
+            const editor = vscode.window.activeTextEditor;
+            const prefixes = documentationPrefixes(editor);
+            if (!prefixes.length) return vscode.commands.executeCommand("default:type", { text: "\n" });
+            return editor.edit(edit => editor.selections.forEach((selection, index) => {
+                edit.replace(selection, "\n" + prefixes[index]);
+            }));
+        }),
+        vscode.window.onDidChangeActiveTextEditor(updateContext),
+        vscode.window.onDidChangeTextEditorSelection(event => {
+            if (event.textEditor === vscode.window.activeTextEditor) updateContext();
+        }),
+        vscode.workspace.onDidChangeTextDocument(event => {
+            if (event.document === vscode.window.activeTextEditor?.document) updateContext();
+        })
+    );
+    updateContext();
+}
+
 async function generateDocumentation() {
     const editor = vscode.window.activeTextEditor;
     if (editor?.document.languageId !== "openscad") return;
@@ -56,4 +109,4 @@ async function generateDocumentation() {
     await editor.insertSnippet(snippet, inline ? position : line.range.start);
 }
 
-module.exports = { generateDocumentation };
+module.exports = { generateDocumentation, registerDocumentationContinuation };

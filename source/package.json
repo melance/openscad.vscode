@@ -33,6 +33,11 @@
     ],
     "keybindings": [
       {
+        "command": "openscad.continueDocumentationComment",
+        "key": "enter",
+        "when": "editorTextFocus && editorLangId == openscad && openscad.inDocumentationComment && !editorReadonly && !suggestWidgetVisible && !renameInputVisible"
+      },
+      {
         "command": "openscad.preview",
         "key": "f5",
         "when": "editorTextFocus && editorLangId == openscad && !inDebugMode"
